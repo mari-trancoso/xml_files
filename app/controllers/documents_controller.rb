@@ -1,4 +1,5 @@
 class DocumentsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_document, only: %i[ show edit update destroy ]
 
   # GET /documents or /documents.json
@@ -21,7 +22,7 @@ class DocumentsController < ApplicationController
 
   # POST /documents or /documents.json
   def create
-    @document = Document.new(document_params)
+    @document = current_user.documents.build(document_params)
 
     respond_to do |format|
       if @document.save
@@ -65,6 +66,6 @@ class DocumentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def document_params
-      params.fetch(:document, {})
+      params.require(:document).permit(:file)
     end
 end
