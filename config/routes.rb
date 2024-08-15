@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   resources :documents
   devise_for :users, skip: :omniauth_callbacks,
@@ -16,4 +18,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  mount Sidekiq::Web => '/sidekiq' # mount Sidekiq::Web in your Rails app
 end

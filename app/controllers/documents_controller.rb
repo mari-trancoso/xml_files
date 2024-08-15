@@ -14,7 +14,6 @@ class DocumentsController < ApplicationController
   # GET /documents/new
   def new
     @document = Document.new
-    p "#############################", current_user
   end
 
   # GET /documents/1/edit

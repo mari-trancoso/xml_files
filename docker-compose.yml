@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  db:
+    image: 'postgres:latest'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+    # env_file:
+    #   - ./env/postgres.env # you can also define env variables like this.
+  web:
+    build: ./
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/docker/app # add our local code to dockerfile
+    depends_on:
+      - db # add all dependant container
+
+  worker:
+    build: ./
+    command: bundle exec sidekiq -C config/sidekiq/worker.yml
+    volumes:
+      - .:/docker/app
+    depends_on:
+      - redis
+      - db
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+
+volumes:
+  postgres: # named volume
