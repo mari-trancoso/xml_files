@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
   resources :documents
-  devise_for :users
+  devise_for :users, skip: :omniauth_callbacks,
+  controllers: {
+   registrations: "users/registrations",
+   confirmations: "users/confirmations",
+   passwords: "users/passwords",
+   sessions: "users/sessions",
+   unlocks: "users/unlocks"
+ }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
